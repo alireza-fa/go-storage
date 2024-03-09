@@ -1,0 +1,3 @@
+package ghofle
+
+func main() {}
