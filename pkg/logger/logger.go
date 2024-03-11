@@ -20,6 +20,8 @@ func NewLogger(cfg *Config) Logger {
 	switch cfg.Logger {
 	case "seq":
 		log = NewSeqLog(cfg)
+	case "zap":
+		log = NewZap(cfg)
 	default:
 		log = NewDummyLog()
 	}

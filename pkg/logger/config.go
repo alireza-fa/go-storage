@@ -5,6 +5,7 @@ type Config struct {
 	Development bool   `koanf:"development"`
 	Encoding    string `koanf:"encoding"`
 	Level       string `koanf:"level"`
+	FilePath    string `koanf:"file_path"`
 	Seq         struct {
 		ApiKey  string `koanf:"api_key"`
 		BaseUrl string `koanf:"base_url"`

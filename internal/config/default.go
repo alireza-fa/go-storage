@@ -5,10 +5,11 @@ import "github.com/alireza-fa/ghofle/pkg/logger"
 func Default() *Config {
 	return &Config{
 		Logger: &logger.Config{
-			Logger:      "dummy",
+			Logger:      "zap",
 			Development: true,
 			Encoding:    "console",
 			Level:       logger.DebugLevel,
+			FilePath:    "./logs/",
 			Seq: struct {
 				ApiKey  string "koanf:\"api_key\""
 				BaseUrl string "koanf:\"base_url\""
