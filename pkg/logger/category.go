@@ -7,6 +7,7 @@ type ExtraKey string
 const (
 	General  Category = "General"
 	Postgres Category = "Postgres"
+	Server   Category = "Server"
 )
 
 const (
@@ -24,4 +25,5 @@ const (
 
 const (
 	AppName ExtraKey = "AppName"
+	Signal  ExtraKey = "Signal"
 )

@@ -2,6 +2,7 @@ package main
 
 import (
 	"github.com/alireza-fa/ghofle/cmd"
+	"github.com/alireza-fa/ghofle/internal/config"
 	"github.com/spf13/cobra"
 	"log"
 	"os"
@@ -16,8 +17,10 @@ func main() {
 	trap := make(chan os.Signal, 1)
 	signal.Notify(trap, syscall.SIGINT, syscall.SIGTERM)
 
+	cfg := config.Default()
+
 	root.AddCommand(
-		cmd.NewServer().Command(trap),
+		cmd.NewServer().Command(cfg, trap),
 	)
 
 	if err := root.Execute(); err != nil {

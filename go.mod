@@ -2,15 +2,19 @@ module github.com/alireza-fa/ghofle
 
 go 1.22.1
 
-require github.com/spf13/cobra v1.8.0
+require (
+	github.com/davecgh/go-spew v1.1.1
+	github.com/gofiber/fiber/v2 v2.52.2
+	github.com/knadh/koanf v1.5.0
+	github.com/spf13/cobra v1.8.0
+)
 
 require (
 	github.com/andybalholm/brotli v1.0.5 // indirect
-	github.com/gofiber/fiber/v2 v2.52.2 // indirect
+	github.com/fatih/structs v1.1.0 // indirect
 	github.com/google/uuid v1.5.0 // indirect
 	github.com/inconshreveable/mousetrap v1.1.0 // indirect
 	github.com/klauspost/compress v1.17.0 // indirect
-	github.com/knadh/koanf v1.5.0 // indirect
 	github.com/mattn/go-colorable v0.1.13 // indirect
 	github.com/mattn/go-isatty v0.0.20 // indirect
 	github.com/mattn/go-runewidth v0.0.15 // indirect

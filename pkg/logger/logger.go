@@ -13,3 +13,16 @@ type Logger interface {
 
 	Fatal(cat Category, Sub SubCategory, message string, extra map[ExtraKey]interface{})
 }
+
+func NewLogger(cfg *Config) Logger {
+	var log Logger
+
+	switch cfg.Logger {
+	case "seq":
+		log = NewSeqLog(cfg)
+	default:
+		log = NewDummyLog()
+	}
+
+	return log
+}

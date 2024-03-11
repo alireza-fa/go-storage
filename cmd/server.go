@@ -3,7 +3,8 @@ package cmd
 import (
 	"fmt"
 	"github.com/alireza-fa/ghofle/internal/api/http"
-	"github.com/gofiber/fiber/v2/log"
+	"github.com/alireza-fa/ghofle/internal/config"
+	"github.com/alireza-fa/ghofle/pkg/logger"
 	"github.com/spf13/cobra"
 	"os"
 )
@@ -14,9 +15,9 @@ func NewServer() *Server {
 	return &Server{}
 }
 
-func (cmd *Server) Command(trap chan os.Signal) *cobra.Command {
+func (cmd *Server) Command(cfg *config.Config, trap chan os.Signal) *cobra.Command {
 	run := func(_ *cobra.Command, _ []string) {
-		cmd.run(trap)
+		cmd.run(cfg, trap)
 	}
 
 	return &cobra.Command{
@@ -26,10 +27,12 @@ func (cmd *Server) Command(trap chan os.Signal) *cobra.Command {
 	}
 }
 
-func (cmd *Server) run(trap chan os.Signal) {
+func (cmd *Server) run(cfg *config.Config, trap chan os.Signal) {
+	log := logger.NewLogger(cfg.Logger)
+
 	server := http.New()
 	go server.Serve(8080)
 
 	filed := fmt.Sprintf("signal trap %s", (<-trap).String())
-	log.Info("existing by receiving unix signal", filed)
+	log.Info(logger.Server, logger.Startup, "existing by receiving unix signal", map[logger.ExtraKey]interface{}{logger.Signal: filed})
 }
