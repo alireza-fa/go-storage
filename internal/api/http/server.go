@@ -18,6 +18,8 @@ func New(log logger.Logger) *Server {
 
 	s.app = fiber.New(fiber.Config{JSONEncoder: json.Marshal, JSONDecoder: json.Unmarshal})
 
+	s.AddRouters()
+
 	return s
 }
 
