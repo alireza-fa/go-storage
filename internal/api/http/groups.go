@@ -5,7 +5,7 @@ import (
 	"github.com/gofiber/fiber/v2"
 )
 
-func (server *Server) AddRouters() {
+func (server *Server) AddGroups() {
 	v1 := server.app.Group("api/v1")
 
 	server.v1(v1)
@@ -15,5 +15,6 @@ func (server *Server) v1(v1 fiber.Router) {
 	// Groups
 	test := v1.Group("test")
 
+	// routers
 	routers.Test(test)
 }
