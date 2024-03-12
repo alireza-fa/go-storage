@@ -3,26 +3,33 @@ package http
 import (
 	"encoding/json"
 	"fmt"
+	"github.com/alireza-fa/ghofle/pkg/logger"
 	"github.com/gofiber/fiber/v2"
-	"github.com/gofiber/fiber/v2/log"
+	"time"
 )
 
 type Server struct {
-	App *fiber.App
+	app    *fiber.App
+	logger logger.Logger
 }
 
-func New() *Server {
-	s := &Server{}
+func New(log logger.Logger) *Server {
+	s := &Server{logger: log}
 
-	s.App = fiber.New(fiber.Config{JSONEncoder: json.Marshal, JSONDecoder: json.Unmarshal})
+	s.app = fiber.New(fiber.Config{JSONEncoder: json.Marshal, JSONDecoder: json.Unmarshal})
 
 	return s
 }
 
 func (server *Server) Serve(port int) error {
+	fmt.Println("Serve....")
+	server.logger.Debug(logger.Server, logger.Startup, "ss", nil)
 	addr := fmt.Sprintf(":%d", port)
-	if err := server.App.Listen(addr); err != nil {
-		log.Errorf("error resolving server: %s", err)
+
+	server.logger.Info(logger.Server, logger.Startup, "web server started", nil)
+	if err := server.app.Listen(addr); err != nil {
+		server.logger.Error(logger.Server, logger.Startup, fmt.Sprintf("error resolving server: %s", err), nil)
+		<-time.After(time.Second)
 		return err
 	}
 

@@ -100,63 +100,20 @@ func (log *ZapLog) Debug(cat Category, sub SubCategory, message string, extra ma
 
 func (log *ZapLog) Info(cat Category, sub SubCategory, message string, extra map[ExtraKey]interface{}) {
 	params := prepareLogInfo(cat, sub, extra)
-	log.zap.Debugw(message, params...)
+	log.zap.Infow(message, params...)
 }
 
 func (log *ZapLog) Warn(cat Category, sub SubCategory, message string, extra map[ExtraKey]interface{}) {
 	params := prepareLogInfo(cat, sub, extra)
-	log.zap.Debugw(message, params...)
+	log.zap.Warnw(message, params...)
 }
 
 func (log *ZapLog) Error(cat Category, sub SubCategory, message string, extra map[ExtraKey]interface{}) {
 	params := prepareLogInfo(cat, sub, extra)
-	log.zap.Debugw(message, params...)
+	log.zap.Errorw(message, params...)
 }
 
 func (log *ZapLog) Fatal(cat Category, sub SubCategory, message string, extra map[ExtraKey]interface{}) {
 	params := prepareLogInfo(cat, sub, extra)
-	log.zap.Debugw(message, params...)
+	log.zap.Fatalw(message, params...)
 }
-
-//func getEncoder(cfg *Config) zapcore.Encoder {
-//	var encoderConfig zapcore.EncoderConfig
-//
-//	if cfg.Development {
-//		encoderConfig = zap.NewDevelopmentEncoderConfig()
-//		encoderConfig.EncodeLevel = zapcore.CapitalColorLevelEncoder
-//	} else {
-//		encoderConfig = zap.NewProductionEncoderConfig()
-//		encoderConfig.EncodeLevel = zapcore.CapitalLevelEncoder
-//	}
-//
-//	encoderConfig.EncodeTime = zapcore.ISO8601TimeEncoder
-//
-//	var encoder zapcore.Encoder
-//	if cfg.Encoding == "console" {
-//		encoder = zapcore.NewConsoleEncoder(encoderConfig)
-//	} else {
-//		encoder = zapcore.NewJSONEncoder(encoderConfig)
-//	}
-//
-//	return encoder
-//}
-//func getWriteSyncer(cfg *Config) zapcore.WriteSyncer {
-//	return zapcore.Lock(os.Stdout)
-//}
-//
-//func getLoggerLevel(cfg *Config) zap.AtomicLevel {
-//	var level zapcore.Level
-//
-//	if err := level.Set(cfg.Level); err != nil {
-//		return zap.NewAtomicLevelAt(zapcore.DebugLevel)
-//	}
-//
-//	return zap.NewAtomicLevelAt(level)
-//}
-//
-//func getOptions(cfg *Config) []zap.Option {
-//	return []zap.Option{
-//		zap.AddStacktrace(zap.ErrorLevel),
-//		zap.AddCaller(),
-//	}
-//}

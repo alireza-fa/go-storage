@@ -30,8 +30,8 @@ func (cmd *Server) Command(cfg *config.Config, trap chan os.Signal) *cobra.Comma
 func (cmd *Server) run(cfg *config.Config, trap chan os.Signal) {
 	log := logger.NewLogger(cfg.Logger)
 
-	server := http.New()
-	go server.Serve(8080)
+	server := http.New(log)
+	go server.Serve(cfg.Port)
 
 	filed := fmt.Sprintf("signal trap %s", (<-trap).String())
 	log.Info(logger.Server, logger.Startup, "existing by receiving unix signal", map[logger.ExtraKey]interface{}{logger.Signal: filed})

@@ -4,6 +4,7 @@ import "github.com/alireza-fa/ghofle/pkg/logger"
 
 func Default() *Config {
 	return &Config{
+		Port: 8080,
 		Logger: &logger.Config{
 			Logger:      "zap",
 			Development: true,
