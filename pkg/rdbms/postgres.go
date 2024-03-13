@@ -1,11 +1,11 @@
-package dbms
+package rdbms
 
 import (
 	"database/sql"
 	"fmt"
 )
 
-func New(cfg *Config) (*sql.DB, error) {
+func New(cfg *Config) (RDBMS, error) {
 	connString := fmt.Sprintf(
 		"host=%s port=%s user=%s password=%s dbname=%s sslmode=disable",
 		cfg.Host, cfg.Port, cfg.Username, cfg.Password, cfg.Database,
@@ -20,5 +20,5 @@ func New(cfg *Config) (*sql.DB, error) {
 		return nil, fmt.Errorf("Error ping database:\n%s", err)
 	}
 
-	return db, nil
+	return &rdbms{db: db}, nil
 }
