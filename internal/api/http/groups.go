@@ -13,8 +13,8 @@ func (server *Server) AddGroups() {
 
 func (server *Server) v1(v1 fiber.Router) {
 	// Groups
-	test := v1.Group("test")
+	auth := v1.Group("auth")
 
 	// routers
-	routers.Test(test)
+	routers.Auth(auth)
 }

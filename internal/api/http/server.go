@@ -24,8 +24,6 @@ func New(log logger.Logger) *Server {
 }
 
 func (server *Server) Serve(port int) error {
-	fmt.Println("Serve....")
-	server.logger.Debug(logger.Server, logger.Startup, "ss", nil)
 	addr := fmt.Sprintf(":%d", port)
 
 	server.logger.Info(logger.Server, logger.Startup, "web server started", nil)
