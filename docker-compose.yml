@@ -3,20 +3,21 @@ version: "3.9"
 services:
   ghofle_postgres:
     image: postgres:latest
-    container_name: ghofle_postgres_container
-    command: -p ${POSTGRES_PORT}
+    container_name: go_storage_postgres_container
+    hostname: ${DB_HOST}
+    command: -p ${DB_PORT}
     environment:
-      POSTGRES_USER: ${POSTGRES_USER}
-      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
-      POSTGRES_DB: ${POSTGRES_DB}
+      POSTGRES_USER: ${DB_USERNAME}
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
+      POSTGRES_DB: ${DB_DATABASE}
       PGDATA: /data/postgres
     volumes:
-      - postgres:/data/postgres
+      - ../data/go_storage/postgres:/data/postgres
     ports:
-      - ${POSTGRES_PORT}:${POSTGRES_PORT}
+      - ${DB_PORT}:${DB_PORT}
     restart: unless-stopped
     networks:
-      - main_ghofle_go_network
+      - main_go_storage_go_network
 
 networks:
-  main_ghofle_go_network:
+  main_go_storage_go_network:

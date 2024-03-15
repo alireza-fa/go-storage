@@ -19,7 +19,7 @@ func init() {
 }
 
 func main() {
-	const description = "Ghofle Application"
+	const description = "Go Storage Application"
 	root := &cobra.Command{Short: description}
 
 	trap := make(chan os.Signal, 1)
@@ -29,6 +29,7 @@ func main() {
 
 	root.AddCommand(
 		cmd.NewServer().Command(cfg, trap),
+		cmd.Migrate{}.Command(cfg, trap),
 	)
 
 	if err := root.Execute(); err != nil {

@@ -6,7 +6,8 @@ import (
 )
 
 type Config struct {
-	Port     string
-	Logger   *logger.Config
-	Postgres *rdbms.Config
+	Port        string
+	Development string
+	Logger      *logger.Config
+	Postgres    *rdbms.Config
 }

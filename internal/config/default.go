@@ -9,7 +9,8 @@ import (
 
 func Default() *Config {
 	return &Config{
-		Port: os.Getenv(constants.PORT),
+		Port:        os.Getenv(constants.PORT),
+		Development: os.Getenv(constants.Development),
 		Logger: &logger.Config{
 			Logger:      os.Getenv(constants.LoggerName),
 			Development: os.Getenv(constants.Development),

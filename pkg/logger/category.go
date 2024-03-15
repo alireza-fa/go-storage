@@ -5,9 +5,9 @@ type SubCategory string
 type ExtraKey string
 
 const (
-	General  Category = "General"
-	Postgres Category = "Postgres"
-	Server   Category = "Server"
+	General Category = "General"
+	RDBMS   Category = "Postgres"
+	Server  Category = "Server"
 )
 
 const (
@@ -26,4 +26,5 @@ const (
 const (
 	AppName ExtraKey = "AppName"
 	Signal  ExtraKey = "Signal"
+	Error   ExtraKey = "Error"
 )
