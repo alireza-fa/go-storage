@@ -1,0 +1,22 @@
+version: "3.9"
+
+services:
+  ghofle_postgres:
+    image: postgres:latest
+    container_name: ghofle_postgres_container
+    command: -p ${POSTGRES_PORT}
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_DB: ${POSTGRES_DB}
+      PGDATA: /data/postgres
+    volumes:
+      - postgres:/data/postgres
+    ports:
+      - ${POSTGRES_PORT}:${POSTGRES_PORT}
+    restart: unless-stopped
+    networks:
+      - main_ghofle_go_network
+
+networks:
+  main_ghofle_go_network:

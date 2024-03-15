@@ -12,9 +12,9 @@ func Default() *Config {
 			Level:       logger.DebugLevel,
 			FilePath:    "./logs/",
 			Seq: struct {
-				ApiKey  string "koanf:\"api_key\""
-				BaseUrl string "koanf:\"base_url\""
-				Port    string "koanf:\"port\""
+				ApiKey  string
+				BaseUrl string
+				Port    string
 			}{ApiKey: "aefaeaveavae", BaseUrl: "localhost", Port: "5341"},
 		},
 	}
