@@ -23,8 +23,8 @@ func New(log logger.Logger) *Server {
 	return s
 }
 
-func (server *Server) Serve(port int) error {
-	addr := fmt.Sprintf(":%d", port)
+func (server *Server) Serve(port string) error {
+	addr := fmt.Sprintf(":%s", port)
 
 	server.logger.Info(logger.Server, logger.Startup, "web server started", nil)
 	if err := server.app.Listen(addr); err != nil {

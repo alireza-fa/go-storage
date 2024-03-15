@@ -3,12 +3,20 @@ package main
 import (
 	"github.com/alireza-fa/ghofle/cmd"
 	"github.com/alireza-fa/ghofle/internal/config"
+	"github.com/joho/godotenv"
 	"github.com/spf13/cobra"
 	"log"
 	"os"
 	"os/signal"
 	"syscall"
 )
+
+func init() {
+	err := godotenv.Load(".env")
+	if err != nil {
+		panic("error loading .env file")
+	}
+}
 
 func main() {
 	const description = "Ghofle Application"

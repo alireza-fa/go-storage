@@ -2,7 +2,7 @@ package logger
 
 type Config struct {
 	Logger      string
-	Development bool
+	Development string
 	Encoding    string
 	Level       string
 	FilePath    string
