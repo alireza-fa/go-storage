@@ -1,4 +1,4 @@
-# Ghofle Backend
+# Go Storage
 
 ```.dotenv
 PORT=8080
