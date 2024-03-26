@@ -5,9 +5,11 @@ type SubCategory string
 type ExtraKey string
 
 const (
-	General Category = "General"
-	RDBMS   Category = "Postgres"
-	Server  Category = "Server"
+	General    Category = "General"
+	RDBMS      Category = "Postgres"
+	Server     Category = "Server"
+	Validation Category = "Validation"
+	Redis      Category = "Redis"
 )
 
 const (
@@ -21,6 +23,11 @@ const (
 	Delete    SubCategory = "Delete"
 	Rollback  SubCategory = "Rollback"
 	Commit    SubCategory = "Commit"
+
+	BodyParser SubCategory = "BodyParser"
+
+	RedisGet SubCategory = "RedisGet"
+	RedisSet SubCategory = "RedisSet"
 )
 
 const (

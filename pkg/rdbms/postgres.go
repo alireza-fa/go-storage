@@ -7,19 +7,10 @@ import (
 )
 
 func New(cfg *Config, development string) (RDBMS, error) {
-	var connString string
-
-	if development == "true" {
-		connString = fmt.Sprintf(
-			"host=%s port=%s user=%s password=%s dbname=%s sslmode=disable",
-			cfg.HostDebug, cfg.Port, cfg.Username, cfg.Password, cfg.Database,
-		)
-	} else {
-		connString = fmt.Sprintf(
-			"host=%s port=%s user=%s password=%s dbname=%s sslmode=disable",
-			cfg.Host, cfg.Port, cfg.Username, cfg.Password, cfg.Database,
-		)
-	}
+	connString := fmt.Sprintf(
+		"host=%s port=%s user=%s password=%s dbname=%s sslmode=disable",
+		cfg.HostDebug, cfg.Port, cfg.Username, cfg.Password, cfg.Database,
+	)
 
 	db, err := sql.Open("postgres", connString)
 	if err != nil {
