@@ -10,6 +10,7 @@ const (
 	Server     Category = "Server"
 	Validation Category = "Validation"
 	Redis      Category = "Redis"
+	Auth       Category = "Auth"
 )
 
 const (
@@ -28,10 +29,16 @@ const (
 
 	RedisGet SubCategory = "RedisGet"
 	RedisSet SubCategory = "RedisSet"
+
+	Register SubCategory = "Register"
+	Login    SubCategory = "Login"
 )
 
 const (
-	AppName ExtraKey = "AppName"
-	Signal  ExtraKey = "Signal"
-	Error   ExtraKey = "Error"
+	AppName   ExtraKey = "AppName"
+	Signal    ExtraKey = "Signal"
+	Error     ExtraKey = "Error"
+	IpAddress ExtraKey = "IpAddress"
+	Username  ExtraKey = "Username"
+	Email     ExtraKey = "Email"
 )

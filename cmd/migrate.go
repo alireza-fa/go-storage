@@ -33,7 +33,7 @@ func (m Migrate) run(cfg *config.Config, args []string) {
 		log.Fatal(logger.RDBMS, logger.Migration, "Invalid arguments given", map[logger.ExtraKey]interface{}{"Args": args})
 	}
 
-	rd, err := rdbms.New(cfg.Postgres, cfg.Development)
+	rd, err := rdbms.New(cfg.Postgres)
 	if err != nil {
 		log.Fatal(logger.RDBMS, logger.Migration, "Error creating rdbms", map[logger.ExtraKey]interface{}{logger.Error: err.Error()})
 	}

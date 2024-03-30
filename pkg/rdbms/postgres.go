@@ -6,10 +6,10 @@ import (
 	_ "github.com/lib/pq"
 )
 
-func New(cfg *Config, development string) (RDBMS, error) {
+func New(cfg *Config) (RDBMS, error) {
 	connString := fmt.Sprintf(
 		"host=%s port=%s user=%s password=%s dbname=%s sslmode=disable",
-		cfg.HostDebug, cfg.Port, cfg.Username, cfg.Password, cfg.Database,
+		cfg.Host, cfg.Port, cfg.Username, cfg.Password, cfg.Database,
 	)
 
 	db, err := sql.Open("postgres", connString)

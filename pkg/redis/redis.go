@@ -9,11 +9,11 @@ import (
 )
 
 type Redis struct {
-	client *redis.Client
+	Client *redis.Client
 	cfg    *Config
 }
 
-func New(cfg *Config) (*Redis, error) {
+func New[T any](cfg *Config) (*Redis, error) {
 	redisInstance := &Redis{cfg: cfg}
 	if err := redisInstance.initRedis(cfg); err != nil {
 		return nil, err
@@ -23,7 +23,7 @@ func New(cfg *Config) (*Redis, error) {
 }
 
 func (r *Redis) initRedis(cfg *Config) error {
-	r.client = redis.NewClient(&redis.Options{
+	r.Client = redis.NewClient(&redis.Options{
 		Addr:               fmt.Sprintf("%s:%s", cfg.Host, cfg.Port),
 		Password:           cfg.Password,
 		DB:                 cfg.Db,
@@ -36,7 +36,7 @@ func (r *Redis) initRedis(cfg *Config) error {
 		IdleCheckFrequency: time.Duration(cfg.IdleCheckFrequency) * time.Millisecond,
 	})
 
-	_, err := r.client.Ping().Result()
+	_, err := r.Client.Ping().Result()
 	if err != nil {
 		errString := fmt.Sprintf("error ping redis, error: %s", err.Error())
 		return errors.New(errString)
@@ -46,27 +46,30 @@ func (r *Redis) initRedis(cfg *Config) error {
 }
 
 func (r *Redis) Close() error {
-	return r.client.Close()
+	return r.Client.Close()
 }
 
-func Set[T any](c *redis.Client, key string, value T, expire time.Duration) error {
+func Set[T any](client *redis.Client, key string, value T, expire time.Duration) error {
 	v, err := json.Marshal(value)
 	if err != nil {
 		errString := fmt.Sprintf("error while set key: %s and value: %v, error: %s", key, value, err)
 		return errors.New(errString)
 	}
 
-	c.Set(key, v, expire)
+	client.Set(key, v, expire)
 	return nil
 }
 
-func Get[T any](c *redis.Client, key string) (T, error) {
+func Get[T any](client *redis.Client, key string) (T, error) {
 	var value T = *new(T)
 
-	v, err := c.Get(key).Result()
+	v, err := client.Get(key).Result()
 	if err != nil {
-		errString := fmt.Sprintf("error while get key: %s, error: %s", key, err.Error())
-		return value, errors.New(errString)
+		if err.Error() != "redis: nil" {
+			errString := fmt.Sprintf("error while get key: %s, error: %s", key, err.Error())
+			return value, errors.New(errString)
+		}
+		return value, nil
 	}
 
 	err = json.Unmarshal([]byte(v), &value)
@@ -76,4 +79,8 @@ func Get[T any](c *redis.Client, key string) (T, error) {
 	}
 
 	return value, nil
+}
+
+func Incr(client *redis.Client, key string) {
+	client.Incr(key)
 }
