@@ -2,6 +2,7 @@ package handlers
 
 import (
 	"github.com/alireza-fa/ghofle/internal/api/dto"
+	"github.com/alireza-fa/ghofle/internal/api/validations"
 	"github.com/alireza-fa/ghofle/internal/config"
 	"github.com/alireza-fa/ghofle/internal/services"
 	"github.com/alireza-fa/ghofle/pkg/logger"
@@ -30,8 +31,16 @@ func (handler *AuthHandler) Register(c *fiber.Ctx) error {
 		return c.Status(http.StatusBadRequest).SendString(errString)
 	}
 
-	if request.Email == "" || request.Username == "" || request.Password == "" {
-		return c.SendStatus(http.StatusBadRequest)
+	if err := validations.Validators["email"].Validate(request.Email); err != nil {
+		return c.Status(http.StatusBadRequest).SendString(err.Error())
+	}
+
+	if err := validations.Validators["username"].Validate(request.Username); err != nil {
+		return c.Status(http.StatusBadRequest).SendString(err.Error())
+	}
+
+	if err := validations.Validators["password"].Validate(request.Password); err != nil {
+		return c.Status(http.StatusBadRequest).SendString(err.Error())
 	}
 
 	if err := handler.service.RegisterUser(c, &request); err != nil {

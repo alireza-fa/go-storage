@@ -60,9 +60,8 @@ func (service *AuthService) RegisterUser(c *fiber.Ctx, userRegister *dto.Registe
 	}
 
 	if err = service.checkAllowIpAddressToReceiveMail(c, r); err != nil {
-		errString := fmt.Sprintf("This email: %s not allow to receive mail", userRegister.Email)
-		service.log.Error(logger.Auth, logger.Register, errString, extra)
-		return errors.New(errString)
+		service.log.Error(logger.Auth, logger.Register, err.Error(), extra)
+		return err
 	}
 
 	value := userRegisterCacheValue{
@@ -103,7 +102,7 @@ func (service *AuthService) checkAllowIpAddressToReceiveMail(c *fiber.Ctx, r *re
 		}
 	}
 
-	if count > 5 {
+	if count > 10 {
 		errString := fmt.Sprintf("You cannot receive mail until 24 hours")
 		service.log.Error(logger.Auth, logger.Register, errString, extra)
 		return errors.New(errString)
