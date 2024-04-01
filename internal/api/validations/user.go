@@ -4,6 +4,7 @@ import (
 	"errors"
 	"fmt"
 	"regexp"
+	"strconv"
 )
 
 type EmailValidator struct{}
@@ -69,5 +70,32 @@ func isValidPassword(password string) bool {
 	if len(password) < 8 || len(password) > 64 {
 		return false
 	}
+	return true
+}
+
+type CodeValidator struct{}
+
+func (v CodeValidator) Validate(input any) error {
+	code, ok := input.(string)
+	if !ok {
+		return errors.New("code is not string")
+	}
+
+	if !isValidCode(code) {
+		return errors.New("invalid code")
+	}
+
+	return nil
+}
+
+func isValidCode(code string) bool {
+	if len(code) != 6 {
+		return false
+	}
+	_, err := strconv.Atoi(code)
+	if err != nil {
+		return false
+	}
+
 	return true
 }

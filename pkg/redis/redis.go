@@ -13,7 +13,7 @@ type Redis struct {
 	cfg    *Config
 }
 
-func New[T any](cfg *Config) (*Redis, error) {
+func New(cfg *Config) (*Redis, error) {
 	redisInstance := &Redis{cfg: cfg}
 	if err := redisInstance.initRedis(cfg); err != nil {
 		return nil, err

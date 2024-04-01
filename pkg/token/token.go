@@ -9,12 +9,7 @@ import (
 	"time"
 )
 
-type Token interface {
-	CreateTokenString(accessData, refreshData any) (*Output, error)
-	ExtractTokenData(tokenString string, data any) error
-}
-
-type token struct {
+type Token struct {
 	privateEd25519Key crypto.PrivateKey
 	publicEd25519Key  crypto.PublicKey
 	accessExpiration  time.Duration
@@ -26,8 +21,8 @@ type Output struct {
 	RefreshToken string `json:"refresh_token"`
 }
 
-func New(cfg *Config) (Token, error) {
-	token := &token{}
+func New(cfg *Config) (*Token, error) {
+	token := &Token{}
 	var err error
 
 	privatePemKey := []byte(cfg.PrivatePem)
@@ -53,7 +48,7 @@ type Payload struct {
 	jwt.RegisteredClaims
 }
 
-func (token *token) CreateTokenString(accessData, refreshData any) (*Output, error) {
+func (token *Token) CreateTokenString(accessData, refreshData any) (*Output, error) {
 	accessToken, err := token.CreateAccessToken(accessData)
 	if err != nil {
 		return nil, err
@@ -67,7 +62,7 @@ func (token *token) CreateTokenString(accessData, refreshData any) (*Output, err
 	return &Output{AccessToken: accessToken, RefreshToken: refreshToken}, nil
 }
 
-func (token *token) CreateAccessToken(data any) (string, error) {
+func (token *Token) CreateAccessToken(data any) (string, error) {
 	dataBytes, err := json.Marshal(data)
 	if err != nil {
 		errStr := fmt.Sprintf("error marshal access data: %s", err)
@@ -82,7 +77,7 @@ func (token *token) CreateAccessToken(data any) (string, error) {
 	return jwtToken.SignedString(token.privateEd25519Key)
 }
 
-func (token *token) CreateRefreshToken(data any) (string, error) {
+func (token *Token) CreateRefreshToken(data any) (string, error) {
 	dataBytes, err := json.Marshal(data)
 	if err != nil {
 		errStr := fmt.Sprintf("error marshal refresh data: %s", err)
@@ -103,7 +98,7 @@ const (
 	errorUnmarshalData  = "error unmarshalling the data"
 )
 
-func (token *token) ExtractTokenData(tokenString string, data any) error {
+func (token *Token) ExtractTokenData(tokenString string, data any) error {
 	checkSigningMethod := func(jwtToken *jwt.Token) (any, error) {
 		if _, ok := jwtToken.Method.(*jwt.SigningMethodEd25519); !ok {
 			return nil, fmt.Errorf("wrong signing method: %v", jwtToken.Header["alg"])

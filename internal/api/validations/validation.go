@@ -8,4 +8,5 @@ var Validators map[string]Validator = map[string]Validator{
 	"email":    EmailValidator{},
 	"username": UsernameValidator{},
 	"password": PasswordValidator{},
+	"code":     CodeValidator{},
 }

@@ -10,4 +10,5 @@ func Auth(router fiber.Router) {
 
 	router.Post("/register", handler.Register)
 	router.Post("/login", handler.Login)
+	router.Post("/verify", handler.Verify)
 }

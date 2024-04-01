@@ -11,6 +11,7 @@ const (
 	Validation Category = "Validation"
 	Redis      Category = "Redis"
 	Auth       Category = "Auth"
+	Token      Category = "Token"
 )
 
 const (
@@ -32,6 +33,8 @@ const (
 
 	Register SubCategory = "Register"
 	Login    SubCategory = "Login"
+
+	GenerateToken SubCategory = "GenerateToken"
 )
 
 const (
@@ -41,4 +44,5 @@ const (
 	IpAddress ExtraKey = "IpAddress"
 	Username  ExtraKey = "Username"
 	Email     ExtraKey = "Email"
+	Code      ExtraKey = "Code"
 )

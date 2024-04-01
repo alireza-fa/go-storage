@@ -6,9 +6,11 @@ import (
 	"github.com/alireza-fa/ghofle/pkg/logger"
 	"github.com/alireza-fa/ghofle/pkg/rdbms"
 	"github.com/alireza-fa/ghofle/pkg/redis"
+	"github.com/alireza-fa/ghofle/pkg/token"
 	"os"
 	"strconv"
 	"sync"
+	"time"
 )
 
 var once sync.Once
@@ -50,6 +52,12 @@ func Default() *Config {
 				PoolSize:           asciiToInteger(constants.PoolSize),
 				PoolTimeout:        asciiToInteger(constants.PoolTimeout),
 				IdleCheckFrequency: asciiToInteger(constants.IdleCheckFrequency),
+			},
+			Token: &token.Config{
+				PublicPem:         "-----BEGIN PUBLIC KEY-----\nMCowBQYDK2VwAyEAJiIlevPkjU0KhKAc2TO78tQ42kjUocxpgjEI3wp+WTY=\n-----END PUBLIC KEY-----",
+				PrivatePem:        "-----BEGIN PRIVATE KEY-----\nMC4CAQAwBQYDK2VwBCIEIAndFawSGPx2G5nnyLCXhF1jlaK7PCOL2gekpjU3dFUu\n-----END PRIVATE KEY-----",
+				AccessExpiration:  time.Duration(10) * time.Minute,
+				RefreshExpiration: time.Duration(30) * time.Hour * 24,
 			},
 		}
 		if cfg.Development == "true" {
