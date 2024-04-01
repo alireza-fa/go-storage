@@ -52,6 +52,8 @@ func (db *rdbms) QueryRaw(query string, in []interface{}, out []interface{}) err
 	if err = stmt.QueryRow(in...).Scan(out...); err != nil {
 		if strings.Contains(err.Error(), "Duplicate entry") {
 			return errors.New(ErrDuplicate)
+		} else if errors.Is(err, sql.ErrNoRows) {
+			return errors.New(ErrNotFound)
 		}
 		return fmt.Errorf("%s\n%s", "error while executing the query or scanning the row", err)
 	}

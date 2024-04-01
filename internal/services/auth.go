@@ -5,18 +5,22 @@ import (
 	"fmt"
 	"github.com/alireza-fa/ghofle/internal/api/dto"
 	"github.com/alireza-fa/ghofle/internal/config"
+	"github.com/alireza-fa/ghofle/internal/db/models"
+	"github.com/alireza-fa/ghofle/internal/db/repositories"
 	"github.com/alireza-fa/ghofle/pkg/logger"
 	"github.com/alireza-fa/ghofle/pkg/redis"
 	"github.com/alireza-fa/ghofle/pkg/token"
 	"github.com/alireza-fa/ghofle/pkg/utils"
 	"github.com/gofiber/fiber/v2"
+	"golang.org/x/crypto/bcrypt"
 	"time"
 )
 
 type AuthService struct {
-	cfg   *config.Config
-	log   logger.Logger
-	token *token.Token
+	cfg            *config.Config
+	log            logger.Logger
+	token          *token.Token
+	userRepository *repositories.UserRepository
 }
 
 func NewAuthService(cfg *config.Config) *AuthService {
@@ -27,9 +31,10 @@ func NewAuthService(cfg *config.Config) *AuthService {
 		panic(err)
 	}
 	return &AuthService{
-		cfg:   cfg,
-		log:   log,
-		token: tokenService,
+		cfg:            cfg,
+		log:            log,
+		token:          tokenService,
+		userRepository: repositories.NewUserRepository(cfg),
 	}
 }
 
@@ -44,6 +49,13 @@ func (service *AuthService) RegisterUser(c *fiber.Ctx, userRegister *dto.Registe
 	extra := map[logger.ExtraKey]interface{}{
 		logger.Username: userRegister.Username,
 		logger.Email:    userRegister.Email,
+	}
+
+	if exist, _ := service.userRepository.CheckUserExistByEmail(userRegister.Email); exist {
+		return errors.New("user with email already exist")
+	}
+	if exist, _ := service.userRepository.CheckUserExistByUsername(userRegister.Username); exist {
+		return errors.New("user with username already exist")
 	}
 
 	r, err := redis.New(service.cfg.Redis)
@@ -181,12 +193,30 @@ func (service *AuthService) Verify(userVerify *dto.UserVerify) (*dto.UserToken, 
 		return nil, errors.New("invalid code")
 	}
 
+	user := models.User{
+		Username: userRegisterCache.Username,
+		Email:    userRegisterCache.Email,
+	}
+	bytePassword, err := bcrypt.GenerateFromPassword([]byte(userRegisterCache.Password), bcrypt.DefaultCost)
+	if err != nil {
+		service.log.Error(logger.Auth, logger.HashPassword, err.Error(), nil)
+		return nil, err
+	}
+	user.HashPassword = string(bytePassword)
+
+	newUser, err := service.userRepository.CreateUser(&user)
+	if err != nil {
+		service.log.Error(logger.Auth, logger.Register, err.Error(), nil)
+		return nil, err
+	}
+
 	accessData := map[string]interface{}{
-		"email":    userRegisterCache.Email,
-		"username": userRegisterCache.Username,
+		"id":       newUser.Id,
+		"email":    newUser.Email,
+		"username": newUser.Username,
 	}
 	refreshData := map[string]interface{}{
-		"id": 1,
+		"id": newUser.Id,
 	}
 
 	tokenData, err := service.token.CreateTokenString(accessData, refreshData)

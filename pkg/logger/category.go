@@ -31,8 +31,9 @@ const (
 	RedisGet SubCategory = "RedisGet"
 	RedisSet SubCategory = "RedisSet"
 
-	Register SubCategory = "Register"
-	Login    SubCategory = "Login"
+	Register     SubCategory = "Register"
+	Login        SubCategory = "Login"
+	HashPassword SubCategory = "HashPassword"
 
 	GenerateToken SubCategory = "GenerateToken"
 )
